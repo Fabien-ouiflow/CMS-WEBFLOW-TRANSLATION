@@ -7,8 +7,7 @@ app.use(express.json());
 
 // Fonction pour traiter la chaîne de caractères
 function processString(data) {
-    let result = data.replace(/"/g, '\\"');  // Ajoute un antislash avant chaque guillemet double
-    result = result.replace(/'/g, ' ');      // Remplace toutes les apostrophes par un espace
+    let result = data.replace(/'/g, ' ');      // Remplace toutes les apostrophes par un espace
     return result;
 }
 
