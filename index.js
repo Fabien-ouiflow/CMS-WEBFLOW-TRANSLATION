@@ -25,14 +25,17 @@ app.post('/modify-html', (req, res) => {
 
 // Modifier l'endpoint '/process-text' pour accepter du texte brut
 app.post('/process-text', express.text(), (req, res) => {
-    console.log(req.body)
-    if (req.body) {
+    console.log(req.body);  // Affiche le contenu du body pour déboguer
+    // Vérifie que le body n'est pas seulement existant mais aussi non vide
+    if (req.body && req.body.trim() !== '') {
         const processedText = processString(req.body);
         res.send(processedText);
     } else {
-        res.status(400).send('Invalid request datadddd');
+        // Renvoie un message personnalisé si le corps de la requête est vide
+        res.status(400).send('Le contenu de cette ligne du CMS est vide');
     }
 });
+
 
 // Démarrage du serveur
 app.listen(PORT, () => {
