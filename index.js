@@ -27,7 +27,7 @@ app.post('/modify-html', (req, res) => {
 app.post('/process-text', (req, res) => {
     if (req.body.translations && req.body.translations.length > 0 && req.body.translations[0].text) {
         const processedText = processString(req.body.translations[0].text);
-        res.json({ processedText });
+        res.send(processedText);
     } else {
         res.status(400).send('Invalid request data');
     }
