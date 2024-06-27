@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware pour parser le body en JSON
+// Middleware global pour parser le body en JSON
 app.use(express.json());
 
 function processString(data) {
@@ -11,7 +11,7 @@ function processString(data) {
     return result;
 }
 
-// Endpoint pour modifier du HTML selon les règles spécifiées
+// Conserver l'endpoint '/modify-html' comme spécifié
 app.post('/modify-html', (req, res) => {
     if (req.body.translations && req.body.translations.length > 0 && req.body.translations[0].text) {
         let htmlContent = req.body.translations[0].text;
@@ -23,13 +23,14 @@ app.post('/modify-html', (req, res) => {
     }
 });
 
-// Nouvel endpoint pour traiter la chaîne de caractères selon processString
-app.post('/process-text', (req, res) => {
-    if (req.body.translations && req.body.translations.length > 0 && req.body.translations[0].text) {
-        const processedText = processString(req.body.translations[0].text);
+// Modifier l'endpoint '/process-text' pour accepter du texte brut
+app.post('/process-text', express.text(), (req, res) => {
+    console.log(req.body)
+    if (req.body) {
+        const processedText = processString(req.body);
         res.send(processedText);
     } else {
-        res.status(400).send('Invalid request data');
+        res.status(400).send('Invalid request datadddd');
     }
 });
 
