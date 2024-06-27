@@ -5,9 +5,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware pour parser le body en JSON
 app.use(express.json());
 
-// Fonction pour traiter la chaîne de caractères
 function processString(data) {
-    let result = data.replace(/'/g, ' ');      // Remplace toutes les apostrophes par un espace
+    let result = data.replace(/'/g, ' ');       // Remplace toutes les apostrophes par un espace
+    result = result.replace(/"/g, '\\"');       // Ajoute un antislash avant chaque guillemet double
     return result;
 }
 
