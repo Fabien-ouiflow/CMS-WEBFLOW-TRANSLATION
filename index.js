@@ -23,7 +23,7 @@ app.post("/modify-html", (req, res) => {
     let htmlContent = req.body.translations[0].text;
     // Remplacer à la fois les apostrophes droites et typographiques
     htmlContent = htmlContent.replace(/'/g, "&#x27;").replace(/’/g, "&#x27;");
-    htmlContent = htmlContent.replace(/font-weight:600/g, 'font-weight:bold');
+    htmlContent = htmlContent.replace(/<i([^>]*)>(.*?)<\/i>/g, '<em$1>$2</em>');
 
     let jsonResponse = JSON.stringify(htmlContent);
     res.send(jsonResponse);
