@@ -13,22 +13,23 @@ function processString(data) {
 
 
 app.post("/modify-html", (req, res) => {
+  if (req.body === 0) {
+    res.send("0"); 
+  } else if (
+    req.body.translations &&
+    req.body.translations.length > 0 &&
+    req.body.translations[0].text
+  ) {
+    let htmlContent = req.body.translations[0].text;
+    // Remplacer à la fois les apostrophes droites et typographiques
+    htmlContent = htmlContent.replace(/'/g, "&#x27;").replace(/’/g, "&#x27;");
+    let jsonResponse = JSON.stringify(htmlContent);
+    res.send(jsonResponse);
+  } else {
+    res.status(400).send("Invalid request data");
+  }
+});
 
-    if (req.body === 0) {
-      res.send("0"); 
-    } else if (
-      req.body.translations &&
-      req.body.translations.length > 0 &&
-      req.body.translations[0].text
-    ) {
-      let htmlContent = req.body.translations[0].text;
-      htmlContent = htmlContent.replace(/'/g, "&#x27;");
-      let jsonResponse = JSON.stringify(htmlContent);
-      res.send(jsonResponse);
-    } else {
-      res.status(400).send("Invalid request data");
-    }
-  });
   
 
 // Modifier l'endpoint '/process-text' pour accepter du texte brut
