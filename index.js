@@ -6,8 +6,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 function processString(data) {
-  let result = data.replace(/'/g, "&#x27;"); 
-  result = result.replace(/"/g, '\\"'); 
+  // let result = data.replace(/'/g, "&#x27;"); 
+  let result = data.replace(/"/g, '\\"'); 
   return result;
 }
 
