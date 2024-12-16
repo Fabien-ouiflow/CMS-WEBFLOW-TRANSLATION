@@ -50,7 +50,7 @@ app.post("/text-to-html", express.text(), (req, res) => {
     let htmlContent = `<!DOCTYPE html><ul>` +
       req.body
         .split("\n") // Diviser par ligne
-        .map(line => line.trim().replace(/^- /, "")) // Enlever le "- " au début de chaque ligne
+        .map(line => line.trim().replace(/^-\s*/, "")) // Enlever "-" ou "- " au début
         .map(line => `<li>${escapeHtml(line)}</li>`) // Transformer chaque ligne en <li>
         .join("") + // Joindre les éléments sans saut de ligne
       `</ul>`
@@ -61,6 +61,7 @@ app.post("/text-to-html", express.text(), (req, res) => {
     res.status(400).send("Le texte fourni est vide ou invalide.")
   }
 })
+
 
 
 
