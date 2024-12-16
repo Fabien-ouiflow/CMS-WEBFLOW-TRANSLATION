@@ -34,21 +34,6 @@ app.post("/modify-html", (req, res) => {
   }
 });
 
-// Endpoint '/process-text' pour accepter du texte brut
-app.post("/process-text", express.text(), (req, res) => {
-  console.log("Requête reçue :", req.body);
-
-  if (req.body === "0") {
-    res.send("0"); 
-  } else if (typeof req.body === "string" && req.body.trim() !== "") {
-    // Traiter la chaîne avec gestion des \n
-    const processedText = processString(req.body);
-    res.send(processedText);
-  } else {
-    res.status(400).send("Le contenu de cette ligne CMS est vide.");
-  }
-});
-
 app.post("/text-to-html", express.text(), (req, res) => {
   console.log("Requête reçue :", req.body)
 
@@ -69,12 +54,13 @@ app.post("/text-to-html", express.text(), (req, res) => {
         .join("") + // Joindre les éléments sans saut de ligne
       `</ul>`
 
-    // Retourner le HTML JSON.stringifié
-    res.send(JSON.stringify(htmlContent))
+    // Retourner uniquement le HTML brut
+    res.send(htmlContent)
   } else {
     res.status(400).send("Le texte fourni est vide ou invalide.")
   }
 })
+
 
 
 
