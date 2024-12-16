@@ -5,12 +5,14 @@ const PORT = process.env.PORT || 3000;
 // Middleware global pour parser le body en JSON
 app.use(express.json());
 
+// Fonction pour traiter les chaînes dans /process-text
 function processString(data) {
-  // let result = data.replace(/'/g, "&#x27;"); 
+  // Remplacer les guillemets doubles
   let result = data.replace(/"/g, '\\"'); 
+  // Remplacer les sauts de ligne par \n
+  result = result.replace(/\r?\n/g, "\\n");
   return result;
 }
-
 
 app.post("/modify-html", (req, res) => {
   if (req.body === 0) {
@@ -21,7 +23,8 @@ app.post("/modify-html", (req, res) => {
     req.body.translations[0].text
   ) {
     let htmlContent = req.body.translations[0].text;
-    // Remplacer à la fois les apostrophes droites et typographiques
+
+    // Remplacer les apostrophes droites et typographiques
     htmlContent = htmlContent.replace(/'/g, "&#x27;").replace(/’/g, "&#x27;");
 
     let jsonResponse = JSON.stringify(htmlContent);
@@ -31,22 +34,17 @@ app.post("/modify-html", (req, res) => {
   }
 });
 
-  
-
-// Modifier l'endpoint '/process-text' pour accepter du texte brut
+// Endpoint '/process-text' pour accepter du texte brut
 app.post("/process-text", express.text(), (req, res) => {
-  console.log(req.body); 
-
+  console.log("Requête reçue :", req.body);
 
   if (req.body === "0") {
     res.send("0"); 
-  }
-
-  else if (typeof req.body === "string" && req.body.trim() !== "") {
+  } else if (typeof req.body === "string" && req.body.trim() !== "") {
+    // Traiter la chaîne avec gestion des \n
     const processedText = processString(req.body);
     res.send(processedText);
   } else {
-
     res.status(400).send("Le contenu de cette ligne CMS est vide.");
   }
 });
