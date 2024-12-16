@@ -69,13 +69,13 @@ app.post("/text-to-html", express.text(), (req, res) => {
         .join("") + // Joindre les éléments sans saut de ligne
       `</ul>`
 
-    // Placer le HTML dans un objet JSON avec JSON.stringify
-    const jsonResponse = JSON.stringify({ html: htmlContent })
-    res.send(jsonResponse)
+    // Retourner le HTML JSON.stringifié
+    res.send(JSON.stringify(htmlContent))
   } else {
     res.status(400).send("Le texte fourni est vide ou invalide.")
   }
 })
+
 
 
 
