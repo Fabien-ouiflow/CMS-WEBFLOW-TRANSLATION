@@ -49,6 +49,35 @@ app.post("/process-text", express.text(), (req, res) => {
   }
 });
 
+app.post("/text-to-html", express.text(), (req, res) => {
+  console.log("Requête reçue :", req.body)
+
+  if (typeof req.body === "string" && req.body.trim() !== "") {
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;") 
+        .replace(/'/g, "&#x27;")
+        .replace(/"/g, "&quot;") 
+    }
+
+    // Transformer chaque ligne du texte en liste HTML
+    let htmlContent = "<ul>\n" +
+      req.body
+        .split("\n") // Diviser par ligne
+        .map(line => `  <li>${escapeHtml(line.trim())}</li>`) // Échapper le texte et transformer en <li>
+        .join("\n") + 
+      "\n</ul>"
+
+    // Placer le HTML dans un objet JSON avec JSON.stringify
+    const jsonResponse = JSON.stringify({ html: htmlContent })
+    res.send(jsonResponse)
+  } else {
+    res.status(400).send("Le texte fourni est vide ou invalide.")
+  }
+})
+
+
+
 // Démarrage du serveur
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
